@@ -1,0 +1,69 @@
+00Middle One:
+    url: https://youtu.be/6GnPpg5lh0s
+    offset: 53
+    duration: 14
+01gymnastics:
+ url:        https://youtu.be/cZs1-6HOobA
+ offset:     163
+ duration:   12
+02podium:
+    url:        https://youtu.be/KSM_QP51-WI
+    offset:     85
+    duration:   5
+03ducks:
+    url:        https://www.youtube.com/watch?v=z9T6j3UfHSU
+    offset:     21
+    duration:   7
+04shooting:
+    url:        https://youtu.be/V0sdVMKQReM
+    offset:     75
+    duration:   8
+05efes:
+    url:        https://youtu.be/WXtVHNZAICQ
+    offset:     18
+    duration:   7
+06shooting:
+    url:        https://youtu.be/V0sdVMKQReM
+    offset:     80
+    duration:    3
+07indianroad:
+    url:        https://youtu.be/RjrEQaG5jPM
+    offset:     69
+    duration:   5
+08mountain:
+    url:        https://youtu.be/87CZL8wq-YQ
+    offset:     149
+    duration:   7
+09running:
+    url:        https://youtu.be/qPKKtvkVAjY
+    offset:     72
+    duration:   10
+10shoko:
+    url:        https://youtu.be/5ofO95pjCbU
+    offset:     369
+    duration:   5
+11circus:
+    url:        https://youtu.be/B-N6dtjwWl4
+    offset:     33
+    duration:   5
+20surfing:
+    url:        https://www.youtube.com/watch?v=ccoMSNhj-cM
+    offset:     0
+    duration:   5
+30kibbutz:
+    url:        https://youtu.be/LWMmcjh4wBw
+    offset:     130
+    duration:   5
+31fish:
+    url:        https://youtu.be/D6HdoIsLMFg
+    offset:     8
+    duration:   5
+32volleyball:
+    url:        https://youtu.be/OMHvSucN_nM
+    offset:     54
+    duration:   5
+33jamesbond:
+    url:        https://youtu.be/Xd3z20EtBzI
+    offset: 196
+    duration: 5
+
