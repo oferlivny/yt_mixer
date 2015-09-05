@@ -9,6 +9,8 @@ import os
 import yaml
 import hashlib
 
+import moviepy.config as cf
+cf.change_settings({"FFMPEG_BINARY": "/usr/local/bin/ffmpeg"})
 try:
     # included in standard lib from Python 2.7
     from collections import OrderedDict
@@ -137,8 +139,10 @@ def gen_clip(output_path):
     # concat_audio_clip = mp.concatenate_audioclips(audioclips)
     concat_clip = mp.concatenate_videoclips(clips,method="compose")
     concat_clip.set_fps = 30
+
     # concat_clip.set_audio(concat_audio_clip)
-    concat_clip.write_videofile(output_path, fps=30)
+    # concat_clip.write_videofile(output_path, fps=30, codec='mpeg4', bitrate="2000k") # , audio_codec='libfaac')
+    concat_clip.audio.write_audiofile(output_path+".mp3")
 
 def load_video_list(path):
     print "loading " + path
