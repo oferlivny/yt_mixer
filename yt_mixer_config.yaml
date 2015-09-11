@@ -1,0 +1,97 @@
+config:
+    concat : false
+    output: /Users/ofer/tmp/ofer.mp4
+    tempdir: /tmp/
+    video_params:
+        width: 640
+        height: 480
+        fps: 30
+        codec: mpeg4
+        bitrate: 2000k
+
+videos:
+    Middle One:
+        url: https://youtu.be/6GnPpg5lh0s
+        offset: 53
+        duration: 20
+    gymnastics:
+     url:        https://youtu.be/y87BO6tnB08
+     offset:     55
+     duration:   15
+    podium:
+        url:        https://youtu.be/KSM_QP51-WI
+        offset:     85
+        duration:   15
+    ducks:
+        url:        https://www.youtube.com/watch?v=z9T6j3UfHSU
+        offset:     21
+        duration:   15
+    shooting:
+        url:        https://youtu.be/V0sdVMKQReM
+        offset:     75
+        duration:   15
+    efes:
+        url:        https://youtu.be/WXtVHNZAICQ
+        offset:     20
+        duration:   15
+    shooting:
+        url:        https://youtu.be/V0sdVMKQReM
+        offset:     80
+        duration:    10
+    indianroad:
+        url:        https://youtu.be/RjrEQaG5jPM
+        offset:     52
+        duration:   20
+    mountain:
+        url:        https://youtu.be/87CZL8wq-YQ
+        offset:     149
+        duration:   15
+    running:
+        url:        https://youtu.be/qPKKtvkVAjY
+        offset:     72
+        duration:   15
+    shoko:
+        url:        https://youtu.be/5ofO95pjCbU
+        offset:     370
+        duration:   15
+    circus:
+        url:        https://youtu.be/B-N6dtjwWl4
+        offset:     30
+        duration:   12
+    surfing:
+        url:        https://www.youtube.com/watch?v=ccoMSNhj-cM
+        offset:     0
+        duration:   10
+    kibbutz:
+        url:        https://youtu.be/LWMmcjh4wBw
+        offset:     130
+        duration:   10
+    fish:
+        url:        https://youtu.be/D6HdoIsLMFg
+        offset:     8
+        duration:   10
+    volleyball:
+        url:        https://youtu.be/OMHvSucN_nM
+        offset:     59
+        duration:   10
+    jamesbond:
+        url:        https://youtu.be/p6k9tpzF38I
+        offset: 82
+        duration: 12
+    sailing:
+        url:        https://youtu.be/olFNIqe9ylA
+        offset: 191
+        duration: 10
+    titanic:
+        url:        https://youtu.be/JrEzEkZJGIs
+        offset: 66
+        duration: 15
+    maggie_pacifier:
+        url:        https://www.youtube.com/watch?v=rjVkIe71nUc
+        offset: 38
+        duration: 25
+    bodies_in_motion_gilad:
+        url:        https://youtu.be/g91TxIGN738
+        offset: 266
+        duration: 20
+# http://www.dw.com/en/flashback-the-gym-wheel/av-17436836

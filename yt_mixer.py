@@ -56,15 +56,15 @@ class OrderedDictYAMLLoader(yaml.Loader):
         return mapping
 
 
-def omap_constructor(loader, node):
-    return loader.construct_pairs(node)
-
-yaml.add_constructor(u'!omap', omap_constructor)
+# def omap_constructor(loader, node):
+#     return loader.construct_pairs(node)
+#
+# yaml.add_constructor(u'!omap', omap_constructor)
 
 class PafyCache:
-    def __init__(self):
-        self.cache_path="/tmp/pafy_cache/"
-        self.cache_index=self.cache_path + "/" + "index.yaml"
+    def __init__(self, tempdir):
+        self.cache_path= tempdir + "/pafy_cache/"
+        self.cache_index= self.cache_path + "/" + "index.yaml"
         try:
             os.mkdir(self.cache_path)
         except:
@@ -99,69 +99,87 @@ class PafyCache:
                 return self.index[url]
             else:
                 print "Cache entry found for {0}, but file does not exists."
+
         print "downloading {0}".format(tag)
         filename=self.loadVideo(url)
         self.index[url]=filename
         self.saveIndex()
         return filename
 
-def extract_all_videos(video_list):
-    cache = PafyCache()
-    for v in video_list:
-        video = video_list[v]
-        filename=cache.getVideo(video['url'],v)
-        video['path']=filename
+
+class YtMixer:
+    def __init__(self,configfile = "yt_mixer_config.yaml" ):
+        self.cfg = self.load_config('yt_mixer_config.yaml')
+        self.video_list = self.cfg['videos']
+        self.cfg = self.cfg['config']
+
+    def load_config(self, path):
+        print "loading " + path
+        with open(path, 'r') as stream:
+            cfg = yaml.load(stream,OrderedDictYAMLLoader)
+            if cfg.get('tempdir') is None:
+                cfg['tempdir']="/tmp/"
+            if cfg.get('output') is None:
+                cfg['output'] = "/tmp/yt_mixer_out.mp4"
+            if cfg.get('concat') is None:
+                cfg['concat'] = True
+            return cfg
+
+    def extract_all_videos(self):
+        self.cache = PafyCache(self.cfg['tempdir'])
+        for v in self.video_list:
+            video = self.video_list[v]
+            filename= self.cache.getVideo(video['url'],v)
+            video['path']=filename
+
+    def gen_clip(self):
+        def get_subclip( fn , offset, duration ):
+            clip = mp.VideoFileClip(fn)
+            # print clip.size
+
+            start = int(offset)
+            end = int(offset)+int(duration)
+
+            print "extracting from {0} to {1}".format(start,end)
+            newclip = clip.subclip(start,end).resize(width = self.cfg['video_params']['width'], height = self.cfg['video_params']['height'])
+
+            # newaudio = clip.audio.subclip(start,end)
+            # print "newaudio duration: {0}".format(newaudio.duration)
+            #newclip.write_videofile("/tmp/before.mp4")
+            # newclip.set_audio(newaudio)
+            # print "audio duration: {0}".format(newclip.audio.duration)
+            #newclip.write_videofile("/tmp/after.mp4")
+            return newclip
+
+        clips = [ get_subclip(self.video_list[video]["path"], self.video_list[video]["offset"], self.video_list[video]["duration"])
+              for video in self.video_list ]
+
+        # audioclips = [video.audio for video in clips]
+        # concat_audio_clip = mp.concatenate_audioclips(audioclips)
+        if (self.cfg['concat']):
+            concat_clip = mp.concatenate_videoclips(clips,method="compose")
+            concat_clip.set_fps = self.cfg['video_params']['fps']
+
+            # concat_clip.set_audio(concat_audio_clip)
+            concat_clip.write_videofile(output_path, fps=self.cfg['video_params']['fps'], codec='mpeg4', bitrate="2000k") # , audio_codec='libfaac')
+            concat_clip.audio.write_audiofile(output_path+".mp3")
+        else:
+            count = 0
+            (a,b) = os.path.splitext(self.cfg['output'])
+            for clip, video in zip(clips, self.video_list):
+                output = "{}_{}{}".format(a,video,b)
+                clip.write_videofile(output, fps=self.cfg['video_params']['fps'], codec=self.cfg['video_params']['codec'], bitrate=self.cfg['video_params']['bitrate']) # , audio_codec='libfaac')
+                clip.audio.write_audiofile(output+".mp3")
 
 
-def gen_clip(output_path):
-    def get_subclip( fn , offset, duration ):
-        clip = mp.VideoFileClip(fn)
-        # print clip.size
+def main():
 
-        start = int(offset)
-        end = int(offset)+int(duration)
-
-        print "extracting from {0} to {1}".format(start,end)
-        newclip = clip.subclip(start,end).resize(width = 640, height = 480)
-
-        # newaudio = clip.audio.subclip(start,end)
-        # print "newaudio duration: {0}".format(newaudio.duration)
-        #newclip.write_videofile("/tmp/before.mp4")
-        # newclip.set_audio(newaudio)
-        # print "audio duration: {0}".format(newclip.audio.duration)
-        #newclip.write_videofile("/tmp/after.mp4")
-        return newclip
-
-    clips = [ get_subclip(video_list[video]["path"], video_list[video]["offset"], video_list[video]["duration"])
-          for video in video_list ]
-
-    # audioclips = [video.audio for video in clips]
-    # concat_audio_clip = mp.concatenate_audioclips(audioclips)
-    concat_clip = mp.concatenate_videoclips(clips,method="compose")
-    concat_clip.set_fps = 30
-
-    # concat_clip.set_audio(concat_audio_clip)
-    # concat_clip.write_videofile(output_path, fps=30, codec='mpeg4', bitrate="2000k") # , audio_codec='libfaac')
-    concat_clip.audio.write_audiofile(output_path+".mp3")
-
-def load_video_list(path):
-    print "loading " + path
-    with open(path, 'r') as stream:
-        return yaml.load(stream,OrderedDictYAMLLoader)
-
-video_list = load_video_list('videolist.yaml')
-
-temppath="/tmp/"
-outpath="/Users/ofer/tmp//"
-outfile="ofer.mp4"
-
-extract_all_videos(video_list)
-# video_list[0]["path"]="/tmp/0.webm"
-
-output_video = "{tmppath}/{outfile}".format(tmppath=outpath,outfile=outfile)
-
-gen_clip(output_video)
+    mixer = YtMixer()
+    mixer.extract_all_videos()
+    mixer.gen_clip()
 # clips = []
 # clips[clipcount] = mp.TextClip("Test", fontsize=270, color='green')
 # clipcount = clipcount + 1
 
+if __name__ == "__main__":
+    main()
