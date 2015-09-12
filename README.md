@@ -10,3 +10,10 @@ Youtube downloader slicer and mixer.
 depenedancies:
 pip install pafy moviepy pyyaml
 (ffmpeg)
+
+
+Usage:
+
+ < edit yt_mixer_config.yaml , add urls, etc...>
+ 
+ python yt_mixer.py
