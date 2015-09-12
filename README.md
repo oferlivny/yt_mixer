@@ -1,9 +1,12 @@
 # yt_mixer
 
-Download youtube videos and mix them into one clip, using a YAML file for configuration.
-Sample YAML file is attached.
+Youtube downloader slicer and mixer.
 
-currently outputs MP4 video.
+- Download youtube clips
+- Extract subclips and save to disk
+- Concat all subclips into one big clip
+- Simple YAML configuration file
 
 depenedancies:
 pip install pafy moviepy pyyaml
+(ffmpeg)
