@@ -56,10 +56,6 @@ class OrderedDictYAMLLoader(yaml.Loader):
         return mapping
 
 
-# def omap_constructor(loader, node):
-#     return loader.construct_pairs(node)
-#
-# yaml.add_constructor(u'!omap', omap_constructor)
 
 class PafyCache:
     def __init__(self, tempdir):
@@ -140,36 +136,41 @@ class YtMixer:
             start = int(offset)
             end = int(offset)+int(duration)
 
-            print "extracting from {0} to {1}".format(start,end)
+            print "extracting frames {0} to {1}".format(start,end)
             newclip = clip.subclip(start,end).resize(width = self.cfg['video_params']['width'], height = self.cfg['video_params']['height'])
-
-            # newaudio = clip.audio.subclip(start,end)
-            # print "newaudio duration: {0}".format(newaudio.duration)
-            #newclip.write_videofile("/tmp/before.mp4")
-            # newclip.set_audio(newaudio)
-            # print "audio duration: {0}".format(newclip.audio.duration)
-            #newclip.write_videofile("/tmp/after.mp4")
             return newclip
 
         clips = [ get_subclip(self.video_list[video]["path"], self.video_list[video]["offset"], self.video_list[video]["duration"])
               for video in self.video_list ]
 
-        # audioclips = [video.audio for video in clips]
-        # concat_audio_clip = mp.concatenate_audioclips(audioclips)
         if (self.cfg['concat']):
             concat_clip = mp.concatenate_videoclips(clips,method="compose")
             concat_clip.set_fps = self.cfg['video_params']['fps']
 
             # concat_clip.set_audio(concat_audio_clip)
-            concat_clip.write_videofile(output_path, fps=self.cfg['video_params']['fps'], codec='mpeg4', bitrate="2000k") # , audio_codec='libfaac')
+            concat_clip.write_videofile(output_path, fps=self.cfg['video_params']['fps'], codec=self.cfg['video_params']['vcodec'],audio_codec=self.cfg['video_params']['acodec'] , bitrate="2000k")
             concat_clip.audio.write_audiofile(output_path+".mp3")
         else:
             count = 0
             (a,b) = os.path.splitext(self.cfg['output'])
             for clip, video in zip(clips, self.video_list):
                 output = "{}_{}{}".format(a,video,b)
-                clip.write_videofile(output, fps=self.cfg['video_params']['fps'], codec=self.cfg['video_params']['codec'], bitrate=self.cfg['video_params']['bitrate']) # , audio_codec='libfaac')
-                clip.audio.write_audiofile(output+".mp3")
+                print ("Writing {}".format(output))
+                # try:
+                vparam=[]
+                if self.cfg['video_params']['imovie_support']:
+                    vparam=['-pix_fmt','yuv420p']
+                clip.write_videofile(output,
+                                     fps=self.cfg['video_params']['fps'],
+                                     codec=self.cfg['video_params']['vcodec'],
+                                     audio_codec=self.cfg['video_params']['acodec'] ,
+                                     bitrate=self.cfg['video_params']['bitrate'],
+                                     ffmpeg_params=vparam)
+                if self.cfg['store_audio']:
+                    clip.audio.write_audiofile(output+"."+self.cfg['audio_extension'])
+                # except:
+                #     print "Failed saving {}. Skipping...".format(video)
+
 
 
 def main():
@@ -177,9 +178,6 @@ def main():
     mixer = YtMixer()
     mixer.extract_all_videos()
     mixer.gen_clip()
-# clips = []
-# clips[clipcount] = mp.TextClip("Test", fontsize=270, color='green')
-# clipcount = clipcount + 1
 
 if __name__ == "__main__":
     main()

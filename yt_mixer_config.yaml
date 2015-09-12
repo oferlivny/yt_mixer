@@ -2,22 +2,31 @@ config:
     concat : false
     output: /Users/ofer/tmp/ofer.mp4
     tempdir: /tmp/
+    store_audio: false
+    audio_extension: mp3
     video_params:
         width: 640
         height: 480
         fps: 30
-        codec: mpeg4
-        bitrate: 2000k
+        vcodec: mpeg4
+        acodec: libfaac
+        bitrate: 1000k
+        imovie_support: true
 
 videos:
-    Middle One:
+    jellyfish:
+        url: https://www.youtube.com/watch?v=FZWm9nTseCU
+        offset: 1
+        duration: 20
+videos_ignored:
+    Middle_One:
         url: https://youtu.be/6GnPpg5lh0s
         offset: 53
         duration: 20
     gymnastics:
-     url:        https://youtu.be/y87BO6tnB08
-     offset:     55
-     duration:   15
+        url:        https://youtu.be/y87BO6tnB08
+        offset:     55
+        duration:   15
     podium:
         url:        https://youtu.be/KSM_QP51-WI
         offset:     85
@@ -34,10 +43,6 @@ videos:
         url:        https://youtu.be/WXtVHNZAICQ
         offset:     20
         duration:   15
-    shooting:
-        url:        https://youtu.be/V0sdVMKQReM
-        offset:     80
-        duration:    10
     indianroad:
         url:        https://youtu.be/RjrEQaG5jPM
         offset:     52
@@ -50,10 +55,14 @@ videos:
         url:        https://youtu.be/qPKKtvkVAjY
         offset:     72
         duration:   15
+    shooting:
+        url:        https://youtu.be/V0sdVMKQReM
+        offset:     72
+        duration:    20
     shoko:
         url:        https://youtu.be/5ofO95pjCbU
         offset:     370
-        duration:   15
+        duration:   30
     circus:
         url:        https://youtu.be/B-N6dtjwWl4
         offset:     30
@@ -93,5 +102,29 @@ videos:
     bodies_in_motion_gilad:
         url:        https://youtu.be/g91TxIGN738
         offset: 266
+        duration: 20
+    soccer:
+        url: https://www.youtube.com/watch?v=m_Y0NEoajGk
+        offset: 134
+        duration: 20
+    forest_gump_running:
+        url: https://www.youtube.com/watch?v=QgnJ8GpsBG8
+        offset: 337
+        duration: 30
+    extreme_cycling:
+        url: https://www.youtube.com/watch?v=LUDAXogGSA4
+        offset: 32
+        duration: 10
+    mruniverse:
+        url: https://www.youtube.com/watch?v=c7Iaz_r2t-g
+        offset: 81
+        duration: 10
+    spinning_pizza:
+        url: https://www.youtube.com/watch?v=rl5X3mEzETU
+        offset: 15
+        duration: 20
+    jellyfish:
+        url: https://www.youtube.com/watch?v=FZWm9nTseCU
+        offset: 1
         duration: 20
 # http://www.dw.com/en/flashback-the-gym-wheel/av-17436836
